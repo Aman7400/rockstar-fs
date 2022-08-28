@@ -5,10 +5,14 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    fontFamily: {
-      'sans-serif' : ['Montserrat']
+    extend: {
+      fontFamily: {
+        'sans-serif': ['Montserrat'],
+      },
+      colors: {
+        heading: '#FA2FB5',
+      },
     },
-    extend: {},
   },
   plugins: [],
 };
