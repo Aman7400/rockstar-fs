@@ -1,4 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useToast
+} from '@chakra-ui/react';
+
 import { Icon } from '@iconify/react';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -7,6 +18,8 @@ const bytesToMegaBytes = (bytes) => Number(bytes / 1024 ** 2).toFixed(2);
 
 const Home = () => {
   const [allFiles, setAllFiles] = React.useState([]);
+
+  const toast = useToast()
 
   const onDrop = React.useCallback((acceptedFiles) => {
     setAllFiles(acceptedFiles);
@@ -26,19 +39,32 @@ const Home = () => {
     setTimeout(() => {
       setIsSending(false);
       setAllFiles([]);
+      generateToast("Files Uploaded for Sharing ✅")
     }, 3000);
+  }
+
+  function generateToast(message) {
+     toast({
+      position: 'bottom-right',
+      render: () => (
+        <div className='bg-white p-2 font-bold px-4 rounded-sm font-sans-serif shadow-lg text-heading'>
+          <p>{message}</p>
+        </div>
+      ),
+    });
   }
 
   function handleClearAllFiles() {
     setAllFiles([]);
+    generateToast("All Files Removed")
   }
   function handleFileRemove(index) {
     setAllFiles((prev) => {
       return prev.filter((f, i) => i !== index);
     });
+    generateToast('File removed');
   }
 
-  console.log(allFiles);
 
   return (
     <div>
@@ -83,7 +109,7 @@ function FileDropZone({ getRootProps, getInputProps }) {
   return (
     <section
       {...getRootProps()}
-      className='p-16 my-8 w-2/4 mx-auto rounded-2xl  shadow-lg cursor-pointer flex flex-col justify-center items-center bg-white'
+      className='p-16 my-8 w-[900px] mx-auto rounded-2xl  shadow-lg cursor-pointer flex flex-col justify-center items-center bg-white'
     >
       <input {...getInputProps()} />
       <h1 className='text-3xl text-center text-heading font-sans-serif font-bold'>
@@ -106,9 +132,17 @@ function FileViewer({
   files,
 }) {
   return (
-    <section className='p-16  w-2/4 mx-auto rounded-2xl  shadow-lg cursor-pointer flex flex-col justify-center items-center bg-white'>
-      <FileViewerMeta {...{totalUploadSize,handleClearAllFiles,handleFileSending,isSending,files}} />
-      <FileListTableView handleFileRemove={handleFileRemove} files={files} />
+    <section className='p-16 w-[900px] max-h-[480px] mx-auto rounded-2xl  shadow-lg cursor-pointer flex flex-col justify-center items-center bg-white'>
+      <FileViewerMeta
+        {...{
+          totalUploadSize,
+          handleClearAllFiles,
+          handleFileSending,
+          isSending,
+          files,
+        }}
+      />
+      <FileTableView handleFileRemove={handleFileRemove} files={files} />
     </section>
   );
 }
@@ -121,7 +155,7 @@ function FileViewerMeta({
   files,
 }) {
   return (
-    <section className='w-full my-2 p-2 flex flex-row justify-between items-center'>
+    <section className='w-full  mb-8 p-2 flex flex-row justify-between items-center'>
       <section>
         <h4 className='text-3xl font-sans-serif font-bold text-center text-heading'>
           Total Files : {files.length}
@@ -150,46 +184,42 @@ function FileViewerMeta({
   );
 }
 
-function FileListTableView({ files, handleFileRemove }) {
+function FileTableView({ files, handleFileRemove }) {
   return (
-    <table className=' bg-pink-300 rounded-lg'>
-      <thead>
-        <tr className='font-sans-serif'>
-          <th></th>
-          <th className='text-start'>File Name</th>
-          <th>Type</th>
-          <th className='text-right'>Size</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody className='w-full'>
-        {files.map((file, i) => (
-          <tr className='w-full mb-1 bg-white p-2' key={file.path}>
-            <td className='w-1/12 text-heading font-medium text-center'>
-             {i + 1}.
-            </td>
-            <td className='w-3/6 hover:text-heading text-start'>
-              {' '}
-              {file.path}
-            </td>{' '}
-            <td className='w-1/6 text-heading text-center'>
-              {file.path.split('.').pop()}
-            </td>
-            <td className='w-1/6 text-right text-heading font-bold'>
-              {bytesToMegaBytes(file.size)} mb
-            </td>
-            <td className='w-1/12'>
-              <Icon
-                className='mx-auto'
-                icon='ant-design:delete-filled'
-                onClick={() => handleFileRemove(i)}
-              />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <TableContainer overflowY='scroll'>
+      <Table size='md' variant='simple'>
+        <Thead>
+          <Tr>
+            <Th ></Th>
+            <Th >File Name</Th>
+            <Th >Type</Th>
+            <Th  isNumeric>Size</Th>
+            <Th isNumeric></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {files.map((file, i) => (
+            <Tr key={i}>
+              <Td >{i + 1}.</Td>
+              <Td title={file.path} >{file.path.length > 48 ? `${file.path.slice(0,44)}...` : file.path}</Td>
+              <Td >{file.path.split('.').pop()}</Td>
+              <Td isNumeric>
+                {bytesToMegaBytes(file.size)} mb
+              </Td>
+              <Td>
+                <Icon
+                  className='mx-auto text-heading'
+                  icon='ant-design:delete-filled'
+                  onClick={() => handleFileRemove(i)}
+                />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
+
 
 export default Home;
