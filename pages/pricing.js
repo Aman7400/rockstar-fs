@@ -1,8 +1,11 @@
+import { MyDropzone } from '../components/DropZone'
 import React from 'react'
 
 const Pricing = () => {
   return (
-    <div>Pricing</div>
+    <div>
+      <MyDropzone />
+    </div>
   )
 }
 
