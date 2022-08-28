@@ -16,9 +16,15 @@ const Home = () => {
 
   const bytesToMegaBytes = (bytes) => Number(bytes / 1024 ** 2).toFixed(2);
 
-  const files = allFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {bytesToMegaBytes(file.size)} mb
+  const totalUploadSize = allFiles.reduce((total, file) => total + file.size,0);
+
+  const files = allFiles.map((file,i) => (
+    <li
+      className='p-1 flex flex-row justify-between font-thin font-sans-serif'
+      key={file.path}
+    >
+      <p className='w-5/6 hover:text-heading'> <span className='text-heading font-medium mr-2'>{(i+1)}</span> {file.path}</p>{' '}
+      <span className='w-1/6 text-right text-heading font-semibold'>{bytesToMegaBytes(file.size)} mb</span>
     </li>
   ));
 
@@ -64,7 +70,8 @@ const Home = () => {
           <h4 className='text-3xl font-sans-serif font-bold text-center text-heading'>
             Total Files : {files.length}
           </h4>
-          <ul>{files}</ul>
+          <p className="font-sans-serif"> Total Size : {bytesToMegaBytes(totalUploadSize)} mb</p>
+          <ul className='max-h-40 my-4 overflow-y-scroll'>{files}</ul>
           <button
             disabled={isSending}
             onClick={() => handleFileSending()}
