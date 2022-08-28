@@ -94,9 +94,9 @@ const Home = () => {
 
 function HeroSection() {
   return (
-    <section className='mx-auto my-16 flex drop-shadow-lg flex-col w-1/2 justify-center items-center'>
+    <section className='mx-auto my-16 flex drop-shadow-lg flex-col w-2/3 justify-center items-center'>
       <h1 className='text-7xl mb-2 text-heading font-sans-serif font-bold'>
-        Send Super Big Files
+        Send Super Big Files 🚀
       </h1>
       <p className='text-5xl mb-2 text-white font-sans-serif font-semibold'>
         Simple. Fast. Beautiful.
@@ -158,7 +158,7 @@ function FileViewerMeta({
     <section className='w-full  mb-8 p-2 flex flex-row justify-between items-center'>
       <section>
         <h4 className='text-3xl font-sans-serif font-bold text-center text-heading'>
-          Total Files : {files.length}
+          {files.length} {files.length > 1 ? 'Files' : 'File'} Uploaded
         </h4>
         <p className='font-sans-serif'>
           {' '}
