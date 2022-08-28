@@ -1,6 +1,9 @@
 # Rockstar File Sharing 🗂
  A File Sharing Platform built powered by Next Js and Tailwind CSS
- 
-## [UI Inspiration 🔗](https://dribbble.com/shots/16346974-Duplin-File-sharing-app)
-![image](https://user-images.githubusercontent.com/47267731/187058903-e4a85c98-892d-4177-8667-127fa65ad931.png)
+
+Home![image](https://user-images.githubusercontent.com/47267731/187064963-610435f3-a4a7-4830-acfe-403193363ea9.png)
+
+Uploaded Files Preview![image](https://user-images.githubusercontent.com/47267731/187064973-58336625-a645-455a-ba7b-13aab8774355.png)
+
+
 
